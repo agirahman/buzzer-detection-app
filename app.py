@@ -6,6 +6,35 @@ from buzzer_detector import BuzzerDetector
 st.title("🕵️‍♂️ Deteksi Akun Buzzer Twitter")
 st.write("Upload dataset JSON atau CSV menyah, lalu dapatkan daftar akun yang terindikasi sebagai buzzer!")
 
+# Instructions
+st.subheader("📋 Instruksi")
+st.markdown("""
+**Format Data yang Diharapkan:**
+- **JSON:** Array of tweet objects dengan fields seperti `tweetId`, `userName`, `content`, `likeCount`, dll.
+- **CSV:** Kolom dengan nama serupa.
+
+**Contoh struktur JSON:**
+```json
+[
+  {
+    "tweetId": "123456",
+    "userName": "john_doe",
+    "content": "@jane_doe This is a reply tweet!",
+    "likeCount": 10,
+    "createdAt": "2023-01-01T00:00:00Z"
+  }
+]
+```
+
+**Pipeline Otomatis:**
+1. **Preprocessing:** Bersihkan teks, ekstrak reply.
+2. **Graph Analysis:** Bangun jaringan interaksi, hitung metrik SNA.
+3. **Feature Engineering:** Hitung kesamaan narasi, frekuensi tweet.
+4. **Labeling:** Terapkan aturan heuristik untuk label buzzer.
+5. **Training:** Latih model XGBoost.
+6. **Inference:** Prediksi probabilitas buzzer untuk semua akun.
+""")
+
 # Inisialisasi detector
 detector = BuzzerDetector()
 
@@ -67,34 +96,7 @@ if uploaded_file is not None:
         st.error(f"❌ Error memproses file: {str(e)}")
         st.info("Pastikan file JSON memiliki struktur array tweet dengan fields: tweetId, userName, content, dll.")
 
-# Instructions
-st.subheader("📋 Instruksi")
-st.markdown("""
-**Format Data yang Diharapkan:**
-- **JSON:** Array of tweet objects dengan fields seperti `tweetId`, `userName`, `content`, `likeCount`, dll.
-- **CSV:** Kolom dengan nama serupa.
 
-**Contoh struktur JSON:**
-```json
-[
-  {
-    "tweetId": "123456",
-    "userName": "john_doe",
-    "content": "@jane_doe This is a reply tweet!",
-    "likeCount": 10,
-    "createdAt": "2023-01-01T00:00:00Z"
-  }
-]
-```
-
-**Pipeline Otomatis:**
-1. **Preprocessing:** Bersihkan teks, ekstrak reply.
-2. **Graph Analysis:** Bangun jaringan interaksi, hitung metrik SNA.
-3. **Feature Engineering:** Hitung kesamaan narasi, frekuensi tweet.
-4. **Labeling:** Terapkan aturan heuristik untuk label buzzer.
-5. **Training:** Latih model XGBoost.
-6. **Inference:** Prediksi probabilitas buzzer untuk semua akun.
-""")
 
 st.markdown("---")
 st.write("Dibuat dengan ❤️ untuk mendukung integritas ruang publik digital.")
